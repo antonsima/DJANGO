@@ -1,12 +1,12 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.http import HttpResponse
 
 
-def home(request):
+def home(request: HttpRequest) -> HttpResponse:
     return render(request, 'catalog/home.html')
 
 
-def contacts(request):
+def contacts(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         phone = request.POST.get('phone', '').strip()
