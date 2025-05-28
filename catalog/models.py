@@ -1,6 +1,30 @@
 from django.db import models
 
 
+class Category(models.Model):
+    name = models.CharField(
+        max_length=150,
+        verbose_name="Наименование",
+        help_text="Введите наименование категории",
+    )
+    description = models.TextField(
+        verbose_name="Описание",
+        help_text="Введите описание категории",
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        return f"{self.name}, {self.description}"
+
+    class Meta:
+        verbose_name = "Каталог"
+        verbose_name_plural = "Каталоги"
+        ordering = [
+            "name",
+        ]
+
+
 class Product(models.Model):
     name = models.CharField(
         max_length=150,
@@ -27,7 +51,7 @@ class Product(models.Model):
         help_text="Выберите категорию продукта",
         related_name='products',
     )
-    cost = models.DecimalField(
+    price = models.IntegerField(
         verbose_name="Цена", help_text="Введите цену за покупку продукта"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
@@ -41,30 +65,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
-        ordering = [
-            "name",
-        ]
-
-
-class Category(models.Model):
-    name = models.CharField(
-        max_length=150,
-        verbose_name="Наименование",
-        help_text="Введите наименование категории",
-    )
-    description = models.TextField(
-        verbose_name="Описание",
-        help_text="Введите описание категории",
-        blank=True,
-        null=True,
-    )
-
-    def __str__(self):
-        return f"{self.name}, {self.description}"
-
-    class Meta:
-        verbose_name = "Каталог"
-        verbose_name_plural = "Каталоги"
         ordering = [
             "name",
         ]
