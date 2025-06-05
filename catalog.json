@@ -1,0 +1,44 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Фрукты",
+        "description": "Вкусные плоды"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Овощи",
+        "description": "Не всегда вкусная, но полезная еда"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Яблоко",
+        "description": "Вкусное очень",
+        "image": "",
+        "category": 1,
+        "price": 50,
+        "created_at": "2025-05-28T17:03:13.871Z",
+        "updated_at": "2025-05-28T17:03:13.871Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Картошка",
+        "description": "Можно сделать пюре",
+        "image": "",
+        "category": 2,
+        "price": 30,
+        "created_at": "2025-05-28T17:04:43.913Z",
+        "updated_at": "2025-05-28T17:04:43.913Z"
+    }
+}
+]
