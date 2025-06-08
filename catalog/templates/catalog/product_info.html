@@ -46,9 +46,12 @@
                         </tr>
                         <tr>
                             <td class="w-25">
-                                <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Вернуться к каталогу</a>
+                                <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Вернуться к каталогу</a>
                             </td>
-                            <td></td>
+                            <td>
+                                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-success">Редактировать продукт</a>
+                                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить продукт</a>
+                            </td>
                         </tr>
                     </table>
                 </div>
