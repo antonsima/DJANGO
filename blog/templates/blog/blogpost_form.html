@@ -1,0 +1,7 @@
+<h1>{% if object %}Редактировать запись{% else %}Создать новую запись{% endif %}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+<a href="{% url 'blogpost_list' %}">Отмена</a>
