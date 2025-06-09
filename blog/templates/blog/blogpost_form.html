@@ -1,7 +1,87 @@
-<h1>{% if object %}Редактировать запись{% else %}Создать новую запись{% endif %}</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-</form>
-<a href="{% url 'blog:blogpost_list' %}">Отмена</a>
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Редактирование {{ object.title }}{% else %}Новая запись{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header">
+                <h2 class="mb-0">{% if object %}Редактирование записи{% else %}Создание новой записи{% endif %}</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Ошибки формы -->
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Поле "Заголовок" -->
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Заголовок</label>
+                        <input type="text" name="title" class="form-control" id="id_title"
+                               value="{{ form.title.value|default_if_none:'' }}" required>
+                        {% if form.title.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.title.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Поле "Содержимое" -->
+                    <div class="mb-3">
+                        <label for="id_content" class="form-label">Содержимое</label>
+                        <textarea name="content" class="form-control" id="id_content"
+                                  rows="5" required>{{ form.content.value|default_if_none:'' }}</textarea>
+                        {% if form.content.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.content.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Поле "Превью" -->
+                    <div class="mb-3">
+                        <label for="id_preview_image" class="form-label">Превью</label>
+                        <input type="file" name="preview_image" class="form-control" id="id_preview_image">
+                        {% if form.preview_image.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.preview_image.errors }}
+                        </div>
+                        {% endif %}
+                        {% if form.preview_image.value %}
+                        <div class="mt-2">
+                            <small>Текущее изображение:</small>
+                            <img src="{{ form.preview_image.value.url }}" class="img-thumbnail" width="150">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Поле "Опубликовано" -->
+                    <div class="mb-3 form-check form-switch">
+                        <input type="checkbox" name="is_published" class="form-check-input" id="id_is_published"
+                               {% if form.is_published.value %}checked{% endif %}>
+                        <label class="form-check-label" for="id_is_published">Опубликовать</label>
+                    </div>
+
+                    <!-- Кнопки -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{% if object %}{% url 'blog:blogpost_detail' object.pk %}{% else %}{% url 'blog:blogpost_list' %}{% endif %}"
+                           class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Отмена
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save"></i> Сохранить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
