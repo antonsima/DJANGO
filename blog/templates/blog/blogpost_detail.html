@@ -5,6 +5,6 @@
     <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" width="300">
 {% endif %}
 <div>{{ post.content }}</div>
-<a href="{% url 'blogpost_list' %}">Назад к списку</a>
-<a href="{% url 'blogpost_update' post.pk %}">Редактировать</a>
-<a href="{% url 'blogpost_delete' post.pk %}">Удалить</a>
+<a href="{% url 'blog:blogpost_list' %}">Назад к списку</a>
+<a href="{% url 'blog:blogpost_update' post.pk %}">Редактировать</a>
+<a href="{% url 'blog:blogpost_delete' post.pk %}">Удалить</a>

@@ -1,8 +1,5 @@
-from msilib.schema import ListView
-
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from blog.models import BlogPost
 
@@ -10,7 +7,7 @@ from blog.models import BlogPost
 class BlogPostCreateView(CreateView):
     model = BlogPost
     template_name = 'blog/blogpost_form.html'
-    success_url = reverse_lazy('blogpost_list')
+    success_url = reverse_lazy('blog:blogpost_list')
     fields = ['title', 'content', 'preview_image', 'is_published']
 
 
@@ -38,11 +35,11 @@ class BlogPostDetailView(DetailView):
 class BlogPostUpdateView(UpdateView):
     model = BlogPost
     template_name = 'blog/blogpost_form.html'
-    success_url = reverse_lazy('blogpost_list')
+    success_url = reverse_lazy('blog:blogpost_list')
     fields = ['title', 'content', 'preview_image', 'is_published']
 
 
 class BlogPostDeleteView(DeleteView):
     model = BlogPost
     template_name = 'blog/blogpost_confirm_delete.html'
-    success_url = reverse_lazy('blogpost_list')
+    success_url = reverse_lazy('blog:blogpost_list')
