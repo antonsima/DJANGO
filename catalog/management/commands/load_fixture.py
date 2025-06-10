@@ -8,7 +8,7 @@ from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
-    help = 'Очищает базу данных и загружает в нее данные из фикстуры'
+    help = "Очищает базу данных и загружает в нее данные из фикстуры"
 
     def handle(self, *args, **options):
         Category.objects.all().delete()
@@ -18,12 +18,10 @@ class Command(BaseCommand):
             BASE_DIR = settings.BASE_DIR
             fixture_path = os.path.join(BASE_DIR, "catalog.json")
 
-            call_command('loaddata', fixture_path, verbosity=2)
+            call_command("loaddata", fixture_path, verbosity=2)
 
             self.stdout.write(
-                self.style.SUCCESS(f'Successfully loaded fixture: {fixture_path}')
+                self.style.SUCCESS(f"Successfully loaded fixture: {fixture_path}")
             )
         except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f'Error loading fixture: {e}')
-            )
+            self.stdout.write(self.style.ERROR(f"Error loading fixture: {e}"))

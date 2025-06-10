@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+{% include 'catalog/navigation.html' %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ product.name }}</h1>
+</div>
+<p>Вы действительно хотите удалить {{ product.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type='submit' class='btn btn-danger'>Подтвердить</button>
+    <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Отменить</a>
+</form>
+
+{% include 'catalog/foot.html' %}
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
