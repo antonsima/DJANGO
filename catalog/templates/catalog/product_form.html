@@ -13,7 +13,9 @@
     <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Отменить</a>
 </form>
 
-    {% include 'catalog/foot.html' %}
+<a href="{% url 'catalog:products_list' %}">Назад к списку</a>
+
+{% include 'catalog/foot.html' %}
 
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
