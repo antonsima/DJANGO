@@ -4,7 +4,6 @@ from .models import Product
 
 
 class ProductForm(forms.ModelForm):
-
     BANNED_WORDS = [
         "казино",
         "криптовалюта",
@@ -53,12 +52,8 @@ class ProductForm(forms.ModelForm):
 
         for word in self.BANNED_WORDS:
             if word in name:
-                raise forms.ValidationError(
-                    f'Название продукта содержит запрещенное слово: "{word}"'
-                )
+                self.add_error('name', f'Название продукта содержит запрещенное слово: {word}')
             if word in description:
-                raise forms.ValidationError(
-                    f'Описание продукта содержит запрещенное слово: "{word}"'
-                )
+                self.add_error('description', f'Описание продукта содержит запрещенное слово: {word}')
 
         return cleaned_data
