@@ -5,15 +5,21 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">{{ product.name }}</h1>
 </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type='submit' class='btn btn-success'>Сохранить</button>
+                <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Отменить</a>
+            </form>
+        </div>
+    </div>
+</div>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit' class='btn btn-success'>Сохранить</button>
-    <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Отменить</a>
-</form>
 
-    {% include 'catalog/foot.html' %}
+{% include 'catalog/foot.html' %}
 
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

@@ -29,11 +29,9 @@ class Product(models.Model):
     name = models.CharField(
         max_length=150,
         verbose_name="Наименование",
-        help_text="Введите наименование продукта",
     )
     description = models.TextField(
         verbose_name="Описание",
-        help_text="Введите описание продукта",
         blank=True,
         null=True,
     )
@@ -52,7 +50,7 @@ class Product(models.Model):
         related_name="products",
     )
     price = models.IntegerField(
-        verbose_name="Цена", help_text="Введите цену за покупку продукта"
+        verbose_name="Цена",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(
