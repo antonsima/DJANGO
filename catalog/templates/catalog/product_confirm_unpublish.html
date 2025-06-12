@@ -10,7 +10,7 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <h4 class="card-title">Подтверждение действия</h4>
-                    <p class="card-text">Вы действительно хотите удалить "{{ product.name }}"?</p>
+                    <p class="card-text">Вы действительно хотите снять с публикации "{{ product.name }}"?</p>
 
                     <form method="post" class="d-inline">
                         {% csrf_token %}
@@ -23,7 +23,6 @@
         </div>
     </div>
 </div>
-
 {% include 'catalog/foot.html' %}
 
 <script src="/static/js/bootstrap.bundle.min.js"></script>
