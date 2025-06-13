@@ -52,8 +52,13 @@ class ProductForm(forms.ModelForm):
 
         for word in self.BANNED_WORDS:
             if word in name:
-                self.add_error('name', f'Название продукта содержит запрещенное слово: {word}')
+                self.add_error(
+                    "name", f"Название продукта содержит запрещенное слово: {word}"
+                )
             if word in description:
-                self.add_error('description', f'Описание продукта содержит запрещенное слово: {word}')
+                self.add_error(
+                    "description",
+                    f"Описание продукта содержит запрещенное слово: {word}",
+                )
 
         return cleaned_data

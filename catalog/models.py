@@ -68,7 +68,7 @@ class Product(models.Model):
         verbose_name="Владелец",
         null=True,
         blank=True,
-        related_name="products"
+        related_name="products",
     )
 
     def __str__(self):

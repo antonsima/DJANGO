@@ -19,7 +19,7 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:products_list")
-    permission_required = 'catalog.add_product'
+    permission_required = "catalog.add_product"
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -37,7 +37,7 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        return Product.objects.filter(is_published=True).order_by('name')
+        return Product.objects.filter(is_published=True).order_by("name")
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
@@ -51,7 +51,7 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:products_list")
-    permission_required = 'catalog.can_change_product'
+    permission_required = "catalog.can_change_product"
 
     def has_permission(self):
         obj = self.get_object()
@@ -63,7 +63,7 @@ class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
     fields = []
     template_name = "catalog/product_confirm_unpublish.html"
     success_url = reverse_lazy("catalog:products_list")
-    permission_required = 'catalog.can_unpublish_product'
+    permission_required = "catalog.can_unpublish_product"
 
     def form_valid(self, form):
         form.instance.is_published = False
@@ -74,7 +74,7 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:products_list")
-    permission_required = 'catalog.can_delete_product'
+    permission_required = "catalog.can_delete_product"
 
     def has_permission(self):
         obj = self.get_object()

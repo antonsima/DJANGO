@@ -6,7 +6,8 @@ from .views import (
     ProductDeleteView,
     ProductDetailView,
     ProductsListView,
-    ProductUpdateView, ProductUnpublishView,
+    ProductUnpublishView,
+    ProductUpdateView,
 )
 
 app_name = "catalog"
@@ -18,5 +19,7 @@ urlpatterns = [
     path("<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),
     path("<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
     path("contacts/", ContactsView.as_view(), name="contacts"),
-    path("<int:pk>/unpublish/", ProductUnpublishView.as_view(), name="product_unpublish"),
+    path(
+        "<int:pk>/unpublish/", ProductUnpublishView.as_view(), name="product_unpublish"
+    ),
 ]
