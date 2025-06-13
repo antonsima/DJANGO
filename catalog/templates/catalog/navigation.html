@@ -1,8 +1,39 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
-    <nav class="ms-5">
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_list' %}">Каталог</a>
-        <a class="p-2 btn btn-outline-primary" href="/catalog/contacts/">Контакты</a>
-        <a class="p-2 btn btn-outline-success" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+    <!-- Логотип и основная навигация слева -->
+    <h5 class="my-0 me-4 me-md-5 font-weight-normal">Skystore</h5>
+
+    <!-- Основные кнопки навигации -->
+    <nav class="d-flex">
+        <a class="p-2 btn btn-outline-primary me-2" href="{% url 'catalog:products_list' %}">Каталог</a>
+        <a class="p-2 btn btn-outline-primary me-2" href="/catalog/contacts/">Контакты</a>
+        <a class="p-2 btn btn-outline-success me-2" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+    </nav>
+
+    <!-- Блок авторизации/регистрации справа -->
+    <nav class="ms-auto d-flex align-items-center">  <!-- ms-auto выталкивает блок вправо -->
+        {% if user.is_authenticated %}
+        {% if user.avatar %}
+        <img src="{{ user.avatar.url }}"
+             alt="Аватар"
+             class="rounded-circle me-2"
+             width="40"
+             height="40"
+             style="object-fit: cover; border: 2px solid #dee2e6;">
+        {% else %}
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2"
+             style="width: 40px; height: 40px; font-weight: 600;">
+            {{ user.username|first|upper }}
+        </div>
+        {% endif %}
+        <p class="mb-0 me-3">Добро пожаловать, {{user.username }}!</p>
+        <form action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="p-2 btn btn-outline-primary">Выйти</button>
+        </form>
+        {% else %}
+        <p class="mb-0 me-3">Добро пожаловать на сайт!</p>
+        <a class="p-2 btn btn-outline-primary me-2" href="{% url 'users:login' %}">Войти</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
+        {% endif %}
     </nav>
 </div>
