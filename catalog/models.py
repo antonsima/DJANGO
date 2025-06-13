@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -23,6 +24,9 @@ class Category(models.Model):
         ordering = [
             "name",
         ]
+
+
+User = get_user_model()
 
 
 class Product(models.Model):
@@ -57,6 +61,15 @@ class Product(models.Model):
         auto_now=True, verbose_name="Дата последнего изменения"
     )
     is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name="Владелец",
+        null=True,
+        blank=True,
+        related_name="products"
+    )
 
     def __str__(self):
         return f"{self.name}, {self.description}"

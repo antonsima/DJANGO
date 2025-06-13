@@ -21,6 +21,14 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     success_url = reverse_lazy("catalog:products_list")
     permission_required = 'catalog.add_product'
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        form.instance.is_published = True
+        return super().form_valid(form)
+
+    def has_permission(self):
+        return self.request.user.is_authenticated
+
 
 class ProductsListView(ListView):
     model = Product
@@ -45,6 +53,10 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     success_url = reverse_lazy("catalog:products_list")
     permission_required = 'catalog.can_change_product'
 
+    def has_permission(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or super().has_permission()
+
 
 class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
     model = Product
@@ -63,6 +75,10 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:products_list")
     permission_required = 'catalog.can_delete_product'
+
+    def has_permission(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or super().has_permission()
 
 
 class ContactsView(TemplateView):

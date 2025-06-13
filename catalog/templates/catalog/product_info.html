@@ -50,7 +50,7 @@
                                     каталогу</a>
                             </td>
                             <td>
-                                {% if perms.catalog.can_change_product %}
+                                {% if user == product.owner or perms.catalog.can_change_product %}
                                 <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-success">Редактировать
                                     продукт</a>
                                 {% endif %}
@@ -60,7 +60,7 @@
                                 </a>
                                 {% endif %}
 
-                                {% if perms.catalog.can_delete_product %}
+                                {% if user == product.owner or perms.catalog.can_delete_product %}
                                 <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
                                     Удалить продукт
                                 </a>
