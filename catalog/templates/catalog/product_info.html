@@ -46,11 +46,25 @@
                         </tr>
                         <tr>
                             <td class="w-25">
-                                <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Вернуться к каталогу</a>
+                                <a href="{% url 'catalog:products_list' %}" class="btn btn-primary">Вернуться к
+                                    каталогу</a>
                             </td>
                             <td>
-                                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-success">Редактировать продукт</a>
-                                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить продукт</a>
+                                {% if user == product.owner or perms.catalog.can_change_product %}
+                                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-success">Редактировать
+                                    продукт</a>
+                                {% endif %}
+                                {% if perms.catalog.can_unpublish_product %}
+                                <a href="{% url 'catalog:product_unpublish' product.pk %}" class="btn btn-warning">
+                                    Снять с публикации
+                                </a>
+                                {% endif %}
+
+                                {% if user == product.owner or perms.catalog.can_delete_product %}
+                                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
+                                    Удалить продукт
+                                </a>
+                                {% endif %}
                             </td>
                         </tr>
                     </table>

@@ -7,15 +7,15 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from dotenv import load_dotenv
 
-from users.forms import CustomUserCreationForm, CustomLoginForm
+from users.forms import CustomLoginForm, CustomUserCreationForm
 
 load_dotenv(override=True)
 
 
 class RegisterView(CreateView):
-    template_name = 'users/register.html'
+    template_name = "users/register.html"
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('catalog:products_list')
+    success_url = reverse_lazy("catalog:products_list")
 
     def form_valid(self, form):
         user = form.save()
@@ -24,14 +24,13 @@ class RegisterView(CreateView):
         return super().form_valid(form)
 
     def send_welcome_email(self, user_email):
-        subject = 'Добро пожаловать в наш сервис'
-        message = 'Спасибо, что зарегистрировались в нашем сервисе!'
+        subject = "Добро пожаловать в наш сервис"
+        message = "Спасибо, что зарегистрировались в нашем сервисе!"
         from_email = os.getenv("EMAIL_HOST_USER")
         recipient_list = [user_email]
         send_mail(subject, message, from_email, recipient_list)
 
 
-
 class CustomLoginView(LoginView):
     form_class = CustomLoginForm
-    template_name = 'users/login.html'  # или ваш путь к шаблону
+    template_name = "users/login.html"

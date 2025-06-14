@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -14,11 +14,20 @@ from catalog.forms import ProductForm
 from catalog.models import Product
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:products_list")
+    permission_required = "catalog.add_product"
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        form.instance.is_published = True
+        return super().form_valid(form)
+
+    def has_permission(self):
+        return self.request.user.is_authenticated
 
 
 class ProductsListView(ListView):
@@ -27,6 +36,9 @@ class ProductsListView(ListView):
     success_url = reverse_lazy("catalog:products_list")
     context_object_name = "products"
 
+    def get_queryset(self):
+        return Product.objects.filter(is_published=True).order_by("name")
+
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
@@ -34,17 +46,39 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "product"
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:products_list")
+    permission_required = "catalog.can_change_product"
+
+    def has_permission(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or super().has_permission()
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductUnpublishView(PermissionRequiredMixin, UpdateView):
+    model = Product
+    fields = []
+    template_name = "catalog/product_confirm_unpublish.html"
+    success_url = reverse_lazy("catalog:products_list")
+    permission_required = "catalog.can_unpublish_product"
+
+    def form_valid(self, form):
+        form.instance.is_published = False
+        return super().form_valid(form)
+
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:products_list")
+    permission_required = "catalog.can_delete_product"
+
+    def has_permission(self):
+        obj = self.get_object()
+        return obj.owner == self.request.user or super().has_permission()
 
 
 class ContactsView(TemplateView):

@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django_countries.widgets import CountrySelectWidget
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
 
 from .models import CustomUser
 
@@ -11,31 +11,32 @@ class CustomLoginForm(AuthenticationForm):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
 
         # Если вы используете email вместо username
-        self.fields['username'].label = 'Email'
+        self.fields["username"].label = "Email"
 
         # Добавляем стили как в форме регистрации
-        self.fields['username'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите ваш email'
-        })
+        self.fields["username"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Введите ваш email"}
+        )
 
-        self.fields['password'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите пароль'
-        })
+        self.fields["password"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Введите пароль"}
+        )
 
 
 class CustomUserCreationForm(UserCreationForm):
-    phone_number = forms.CharField(max_length=15, required=False,
-                                   help_text='Необязательное поле. Введите ваш номер телефона')
+    phone_number = forms.CharField(
+        max_length=15,
+        required=False,
+        help_text="Необязательное поле. Введите ваш номер телефона",
+    )
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=150, required=False)
     username = forms.CharField(max_length=50, required=True)
-    avatar = forms.ImageField(required=False, label='Аватар')
+    avatar = forms.ImageField(required=False, label="Аватар")
     country = CountryField().formfield(
-        widget=CountrySelectWidget(attrs={'class': 'form-control'}),
+        widget=CountrySelectWidget(attrs={"class": "form-control"}),
         required=False,
-        label='Страна'
+        label="Страна",
     )
     usable_password = None
 
@@ -60,13 +61,22 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = (
-        'email', 'username', 'first_name', 'last_name', 'phone_number', 'avatar', 'country', 'password1', 'password2')
-        widgets = {'country': CountrySelectWidget()}
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "avatar",
+            "country",
+            "password1",
+            "password2",
+        )
+        widgets = {"country": CountrySelectWidget()}
 
     def clean_phone_number(self):
-        phone_number = self.cleaned_data.get('phone_number')
+        phone_number = self.cleaned_data.get("phone_number")
 
         if phone_number and not phone_number.isdigit():
-            raise forms.ValidationError('Номер телефона должен состоять только из цифр')
+            raise forms.ValidationError("Номер телефона должен состоять только из цифр")
 
         return phone_number
