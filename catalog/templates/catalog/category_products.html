@@ -1,0 +1,38 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+{% include 'catalog/navigation.html' %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Продукты в категории "{{ current_category.name }}"</h1>
+</div>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<div class="container">
+    <div class="row text-center">
+        {% for product in products %}
+        {% if product.is_published %}
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ product.price }} RUB</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        {{ product.description|truncatechars:100 }}
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">
+                        <a href='{% url "catalog:product_detail" product.pk %}'>Купить</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+            <p>В этой категории пока нет продуктов.</p>
+        {% endfor %}
+    </div>
+
+    {% include 'catalog/foot.html' %}
+</div>
+{% endblock %}
