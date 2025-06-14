@@ -1,13 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import (
-    DeleteView,
-    DetailView,
-    ListView,
-    TemplateView,
-    UpdateView,
-)
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import DeleteView, DetailView, ListView, TemplateView, UpdateView
 from django.views.generic.edit import CreateView
 
 from catalog.forms import ProductForm
@@ -37,9 +34,14 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        return Product.objects.filter(is_published=True).order_by("name")
+        queryset = cache.get("products_queryset")
+        if not queryset:
+            queryset = Product.objects.filter(is_published=True).order_by("name")
+            cache.set("products_queryset", queryset, 60 * 15)
+        return queryset
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "catalog/product_info.html"
